@@ -15,6 +15,7 @@
                               name="login"
                               :label="$ml.get('login')"
                               type="text"
+                              v-model="user.login"
                            ></v-text-field>
                            <v-text-field
                               id="password"
@@ -22,12 +23,13 @@
                               name="password"
                               :label="$ml.get('password')"
                               type="password"
+                              v-model="user.password"
                            ></v-text-field>
                         </v-form>
                      </v-card-text>
                      <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" to="/menu">{{$ml.get('enter')}}</v-btn>
+                        <v-btn color="primary" @click="login">{{$ml.get('enter')}}</v-btn>
                      </v-card-actions>
                   </v-card>
                </v-flex>
@@ -43,10 +45,24 @@ export default {
    props: {
       source: String,
    },
-   created() {
-    
-    console.log("Oi");
-   }
+   data: () => ({
+      user:{
+          login: '',
+          passowrd:''
+      }
+    }),
+    methods: {
+      login() {
+         //Fake login to apresetation!
+         if(this.user.login === "LUIZ") {
+            this.$router.push({name: 'menu'});
+         } else {
+            //TODO: Impl dashboard
+            this.$router.push({name: 'menu'});
+         }
+        
+      }
+    }
 };
 </script>
 
