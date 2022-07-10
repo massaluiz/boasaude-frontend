@@ -36,4 +36,33 @@ export default class TreatmentController {
             }
         });
     }
+
+    getListByUser(userName) {
+        return new Promise((resolve, reject) => {
+            try {
+                this._axiosResource.get(`/treatment/user/`+userName).then((res) => {
+
+                    let resultCall = res.data;
+                    console.log(resultCall);
+                    let treatments = [];
+
+                    resultCall.forEach(treatment => {
+
+                        treatments.push(
+                            new Treatment(treatment.id,
+                                treatment.title,
+                                treatment.description,
+                                treatment.createAt,
+                                treatment.treatmentDate)
+                        );
+                    });
+
+
+                    resolve(treatments);
+                });
+            } catch(error) {
+                reject(error);
+            }
+        });
+    }
 }

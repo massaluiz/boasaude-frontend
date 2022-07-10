@@ -12,6 +12,9 @@
           <th class="text-left">
             Date
           </th>
+          <th class="text-right">
+            Action
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -21,14 +24,36 @@
           <td>{{ item.title }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.treatmentDate }}</td>
+          <td>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text>
+                Delete
+              </v-btn>
+            </v-card-actions>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text>
+                Add
+              </v-btn>
+            </v-card-actions>
+          </td>
         </tr>
       </tbody>
     </template>
   </v-simple-table>
 </template>
 
-<script>
 
+<script>
 import TreatmentController from '../../controller/TreatmentController';
 import axios from '../../axios';
 
@@ -40,7 +65,7 @@ export default {
     },
     created() {
       this.treatmentController = new TreatmentController(axios);
-      this.treatmentController.getList()
+      this.treatmentController.getListByUser("Luiz")
       .then((response) => {
               this.treatments = response;
         });
