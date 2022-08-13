@@ -56,6 +56,8 @@ export default {
          //Fake login to apresetation!
          if(this.user.login === "LUIZ") {
             this.$router.push({name: 'menu'});
+         } else if(this.user.login === "ADMIN") {
+            this.$router.push({name:'dashboard'});
          } else {
             //TODO: Impl dashboard
             this.$router.push({name: 'menu'});
