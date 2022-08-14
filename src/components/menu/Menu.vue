@@ -7,10 +7,13 @@
             Title
           </th>
           <th class="text-left">
-            Description
+           Especialidade
           </th>
           <th class="text-left">
             Date
+          </th>
+          <th class="text-left">
+            Description
           </th>
           <th class="text-right">
             Action
@@ -18,18 +21,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="item in treatments"
-          :key="item.id">
+        <tr v-for="item in treatments" :key="item.id">
           <td>{{ item.title }}</td>
+          <td>{{ item.speciality }}</td>
+          <td>{{ item.treatmentDate.substring(0, 10) }}</td>
           <td>{{ item.description }}</td>
-          <td>{{ item.treatmentDate }}</td>
           <td>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text>
+              <v-btn color="blue darken-1" text @click="remove(item.id)">
                 Delete
               </v-btn>
             </v-card-actions>
@@ -37,124 +37,66 @@
         </tr>
       </tbody>
       <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Add Treatment
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">User Profile</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal first name*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Email*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+        <v-dialog v-model="dialog" persistent max-width="600px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark v-bind="attrs" v-on="on">
+              Add Treatment
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">User Profile</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="name" label="Nome Completo"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
+                      transition="scale-transition" offset-y min-width="auto">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="date" label="Data da Consulta" prepend-icon="mdi-calendar" v-bind="attrs"
+                          v-on="on"></v-text-field>
+                      </template>
+                      <v-date-picker v-model="date" no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="menu = false">
+                          Cancelar
+                        </v-btn>
+                        <v-btn text color="primary" @click="$refs.menu.save(date)">
+                          OK
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12" sm="12">
+                    <v-select :items="['Clinico Geral', 'Pediatra', 'Oftalmo', 'Cardiologista']" label="Especialidade"
+                      v-model="speciality"></v-select>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-textarea v-model="description" name="input-7-1" label="Observações"
+                      hint="Descreva sua necessidade"></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog = false">
+                Close
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="save">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
     </template>
-    
   </v-simple-table>
-
-  
 </template>
-
 
 <script>
 import TreatmentController from '../../controller/TreatmentController';
@@ -162,28 +104,53 @@ import axios from '../../axios';
 
 export default {
 
-    name: "Menu",
-    components: {
-      
-    },
-    created() {
-      this.treatmentController = new TreatmentController(axios);
-      this.treatmentController.getListByUser("Luiz")
+  name: "Menu",
+  components: {
+
+  },
+  created() {
+    this.treatmentController = new TreatmentController(axios);
+    this.treatmentController.getListByUser("Luiz")
       .then((response) => {
-              this.treatments = response;
-        });
-    },
-    data() {
-        return {
-            treatments: {},
-            table: [],
-            dialog: false
-        }
-    },
-    methods: {
-      goToLink(where) {
-        this.$router.push(where);
-      }
+        this.treatments = response;
+      });
+  },
+  data() {
+    return {
+      treatments: {},
+      table: [],
+      dialog: false,
+      menu: false,
+      name: "Luiz Massa",
+      date: "",
+      speciality: "",
+      description: "",
+      user: "Luiz"
     }
+  },
+  methods: {
+    save() {
+      this.treatmentController.addTreatment({
+                                              id:"",
+                                              title:"Atendimento Médico",
+                                              treatmentDate: this.date,
+                                              createAt:"",
+                                              description: this.description,
+                                              speciality: this.speciality,
+                                              user: this.user
+                                             })
+      .then((response) => {
+        console.log(response);
+        this.$router.go(this.$router.currentRoute);
+      });
+    },
+    remove(id) {
+      this.treatmentController.removeTreatment(id)
+      .then((response) => {
+        console.log(response);
+        this.$router.go(this.$router.currentRoute);
+      });
+    }
+  }
 }
 </script>

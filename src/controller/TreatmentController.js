@@ -24,7 +24,8 @@ export default class TreatmentController {
                                 treatment.title,
                                 treatment.description,
                                 treatment.createAt,
-                                treatment.treatmentDate)
+                                treatment.treatmentDate,
+                                treatment.speciality)
                         );
                     });
 
@@ -53,12 +54,39 @@ export default class TreatmentController {
                                 treatment.title,
                                 treatment.description,
                                 treatment.createAt,
-                                treatment.treatmentDate)
+                                treatment.treatmentDate,
+                                treatment.speciality)
                         );
                     });
 
 
                     resolve(treatments);
+                });
+            } catch(error) {
+                reject(error);
+            }
+        });
+    }
+
+    addTreatment(treatment) {
+        return new Promise((resolve, reject) => {
+            try {
+                this._axiosResource.post(`/treatment`, treatment).then((res) => {
+                    console.log(res);
+                    resolve();
+                });
+            } catch(error) {
+                reject(error);
+            }
+        });
+    }
+
+    removeTreatment(id) {
+        return new Promise((resolve, reject) => {
+            try {
+                this._axiosResource.delete(`/treatment/`+id).then((res) => {
+                    console.log(res);
+                    resolve();
                 });
             } catch(error) {
                 reject(error);

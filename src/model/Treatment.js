@@ -5,12 +5,14 @@ export default class Treatment {
         title, 
         description, 
         createAt, 
-        treatmentDate) {
+        treatmentDate,
+        speciality) {
 
         this.id = id;
         this.title = title;
         this.description = description;
         this.createAt = createAt;
         this.treatmentDate = treatmentDate;
+        this.speciality = speciality;
     }
 }
