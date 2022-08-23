@@ -1,4 +1,5 @@
 import Treatment from '../model/Treatment';
+import Tracks from '../model/Tracks';
 
 export default class TreatmentController {
 
@@ -87,6 +88,34 @@ export default class TreatmentController {
                 this._axiosResource.delete(`/treatment/`+id).then((res) => {
                     console.log(res);
                     resolve();
+                });
+            } catch(error) {
+                reject(error);
+            }
+        });
+    }
+
+    getTracks() {
+        return new Promise((resolve, reject) => {
+            try {
+                this._axiosResource.get(`/tracks`).then((res) => {
+
+                    let resultCall = res.data;
+                    console.log(resultCall);
+                    let tracks = [];
+
+                    resultCall.forEach(track => {
+
+                        tracks.push(
+                            new Tracks(track.id,
+                                track.action,
+                                track.user,
+                                track.createAt)
+                        );
+                    });
+
+
+                    resolve(tracks);
                 });
             } catch(error) {
                 reject(error);
