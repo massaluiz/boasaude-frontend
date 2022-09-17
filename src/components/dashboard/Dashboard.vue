@@ -2,17 +2,20 @@
   <v-card>
     <v-tabs v-model="tab" background-color="dark accent-4" centered dark icons-and-text>
       <v-tabs-slider></v-tabs-slider>
+      <v-tab href="#tab-0">
+        Analisar Atendimentos
+      </v-tab>
       <v-tab href="#tab-1">
-        Atendimentos: {{ countTreatments }}
+        Atendimentos: {{  countTreatments  }}
       </v-tab>
       <v-tab href="#tab-2">
-        Especialidades: {{ countEsp }}
+        Especialidades: {{  countEsp  }}
       </v-tab>
       <v-tab href="#tab-3">
-        Remarcações: {{ countRec }}
+        Remarcações: {{  countRec  }}
       </v-tab>
       <v-tab href="#tab-4">
-        Cancelados: {{ countCancelados }}
+        Cancelados: {{  countCancelados  }}
       </v-tab>
     </v-tabs>
 
@@ -39,15 +42,68 @@
               </thead>
               <tbody>
                 <tr v-for="item in tracks" :key="item.id">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.action }}</td>
-                  <td>{{ item.createAt.substring(0, 10) }}</td>
-                  <td>{{ item.user }}</td>
+                  <td>{{  item.id  }}</td>
+                  <td>{{  item.action  }}</td>
+                  <td>{{  item.createAt.substring(0, 10)  }}</td>
+                  <td>{{  item.user  }}</td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
         </v-card>
+      </v-tab-item>
+      <v-tab-item :key="0" :value="'tab-0'">
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">
+                  Title
+                </th>
+                <th class="text-left">
+                  Especialidade
+                </th>
+                <th class="text-left">
+                  Médico
+                </th>
+                <th class="text-left">
+                  Convenio
+                </th>
+                <th class="text-left">
+                  Date
+                </th>
+                <th class="text-left">
+                  Status
+                </th>
+                <th class="text-left">
+                  Description
+                </th>
+                <th class="text-right">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in treatments" :key="item.id">
+                <td>{{  item.title  }}</td>
+                <td>{{  item.speciality  }}</td>
+                <td>{{  item.doctor  }}</td>
+                <td>{{  item.healthInsurance  }}</td>
+                <td>{{  item.treatmentDate.substring(0, 10)  }}</td>
+                <td>{{  item.status  }}</td>
+                <td>{{  item.description  }}</td>
+                <td>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="remove(item.id)">
+                      Autorizar
+                    </v-btn>
+                  </v-card-actions>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -72,7 +128,7 @@ export default {
               this.countTreatments = this.countTreatments + 1;
               break;
             case 'DELETE_TREATMENT':
-               this.countCancelados = this.countCancelados + 1;
+              this.countCancelados = this.countCancelados + 1;
               break;
             case 'EDIT_TREATMENT':
               this.countEsp = this.countEsp + 1;
@@ -81,9 +137,15 @@ export default {
               this.countRec = this.countRec + 1;
               break;
             default:
-              console.log(`Sorry, we are out o`);
+              console.log(`Sorry, we are out.`);
           }
         });
+      });
+
+    this.treatmentController = new TreatmentController(axios);
+    this.treatmentController.getList()
+      .then((response) => {
+        this.treatments = response;
       });
   },
   data() {
@@ -93,7 +155,8 @@ export default {
       countTreatments: 0,
       countEsp: 0,
       countRec: 0,
-      countCancelados: 0
+      countCancelados: 0,
+      treatments: {},
     }
   },
 }

@@ -26,7 +26,10 @@ export default class TreatmentController {
                                 treatment.description,
                                 treatment.createAt,
                                 treatment.treatmentDate,
-                                treatment.speciality)
+                                treatment.speciality,
+                                treatment.status,
+                                treatment.doctor,
+                                treatment.healthInsurance)
                         );
                     });
 
@@ -56,7 +59,10 @@ export default class TreatmentController {
                                 treatment.description,
                                 treatment.createAt,
                                 treatment.treatmentDate,
-                                treatment.speciality)
+                                treatment.speciality,
+                                treatment.status,
+                                treatment.doctor,
+                                treatment.healthInsurance)
                         );
                     });
 

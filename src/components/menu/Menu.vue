@@ -10,7 +10,16 @@
            Especialidade
           </th>
           <th class="text-left">
+           Médico
+          </th>
+          <th class="text-left">
+           Convenio
+          </th>
+          <th class="text-left">
             Date
+          </th>
+          <th class="text-left">
+           Status
           </th>
           <th class="text-left">
             Description
@@ -24,7 +33,10 @@
         <tr v-for="item in treatments" :key="item.id">
           <td>{{ item.title }}</td>
           <td>{{ item.speciality }}</td>
+          <td>{{ item.doctor }}</td>
+          <td>{{ item.healthInsurance }}</td>
           <td>{{ item.treatmentDate.substring(0, 10) }}</td>
+          <td>{{ item.status }}</td>
           <td>{{ item.description }}</td>
           <td>
             <v-card-actions>
@@ -74,6 +86,14 @@
                   <v-col cols="12" sm="12">
                     <v-select :items="['Clinico Geral', 'Pediatra', 'Oftalmo', 'Cardiologista']" label="Especialidade"
                       v-model="speciality"></v-select>
+                  </v-col>
+                  <v-col cols="12" sm="12">
+                    <v-select :items="['Jorge Fernando', 'Julia Pessoa', 'Marcos Antonio', 'Isabella Candida']" label="Médico"
+                      v-model="doctor"></v-select>
+                  </v-col>
+                  <v-col cols="12" sm="12">
+                    <v-select :items="['SulAmerica', 'Bradesco', 'Unimed', 'HapiVida']" label="Convenio"
+                      v-model="healthInsurance"></v-select>
                   </v-col>
                   <v-col cols="12" md="12">
                     <v-textarea v-model="description" name="input-7-1" label="Observações"
@@ -125,7 +145,9 @@ export default {
       date: "",
       speciality: "",
       description: "",
-      user: "Luiz"
+      user: "Luiz",
+      doctor: "",
+      healthInsurance: ""
     }
   },
   methods: {
@@ -137,7 +159,9 @@ export default {
                                               createAt:"",
                                               description: this.description,
                                               speciality: this.speciality,
-                                              user: this.user
+                                              user: this.user,
+                                              doctor: this.doctor,
+                                              healthInsurance: this.healthInsurance
                                              })
       .then((response) => {
         console.log(response);

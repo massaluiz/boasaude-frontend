@@ -6,7 +6,10 @@ export default class Treatment {
         description, 
         createAt, 
         treatmentDate,
-        speciality) {
+        speciality,
+        status,
+        doctor,
+        healthInsurance) {
 
         this.id = id;
         this.title = title;
@@ -14,5 +17,8 @@ export default class Treatment {
         this.createAt = createAt;
         this.treatmentDate = treatmentDate;
         this.speciality = speciality;
+        this.status = status;
+        this.doctor = doctor;
+        this.healthInsurance = healthInsurance;
     }
 }
