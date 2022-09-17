@@ -75,6 +75,39 @@ export default class TreatmentController {
         });
     }
 
+    getListByStatus(status) {
+        return new Promise((resolve, reject) => {
+            try {
+                this._axiosResource.get(`/treatment/status/`+status).then((res) => {
+
+                    let resultCall = res.data;
+                    console.log(resultCall);
+                    let treatments = [];
+
+                    resultCall.forEach(treatment => {
+
+                        treatments.push(
+                            new Treatment(treatment.id,
+                                treatment.title,
+                                treatment.description,
+                                treatment.createAt,
+                                treatment.treatmentDate,
+                                treatment.speciality,
+                                treatment.status,
+                                treatment.doctor,
+                                treatment.healthInsurance)
+                        );
+                    });
+
+
+                    resolve(treatments);
+                });
+            } catch(error) {
+                reject(error);
+            }
+        });
+    }
+
     addTreatment(treatment) {
         return new Promise((resolve, reject) => {
             try {
@@ -92,6 +125,19 @@ export default class TreatmentController {
         return new Promise((resolve, reject) => {
             try {
                 this._axiosResource.delete(`/treatment/`+id).then((res) => {
+                    console.log(res);
+                    resolve();
+                });
+            } catch(error) {
+                reject(error);
+            }
+        });
+    }
+
+    autorizationHealthInsurance(id) {
+        return new Promise((resolve, reject) => {
+            try {
+                this._axiosResource.put(`/treatment/insurance/`+id).then((res) => {
                     console.log(res);
                     resolve();
                 });

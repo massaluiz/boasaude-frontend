@@ -95,7 +95,7 @@
                 <td>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="remove(item.id)">
+                    <v-btn color="blue darken-1" text @click="autorization(item.id)">
                       Autorizar
                     </v-btn>
                   </v-card-actions>
@@ -143,7 +143,7 @@ export default {
       });
 
     this.treatmentController = new TreatmentController(axios);
-    this.treatmentController.getList()
+    this.treatmentController.getListByStatus("Under Analysis")
       .then((response) => {
         this.treatments = response;
       });
@@ -159,5 +159,14 @@ export default {
       treatments: {},
     }
   },
+  methods: {
+    autorization(id) {
+      this.treatmentController.autorizationHealthInsurance(id)
+      .then((response) => {
+        console.log(response);
+        this.$router.go(this.$router.currentRoute);
+      });
+    }
+  }
 }
 </script>
